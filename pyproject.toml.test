@@ -1,0 +1,78 @@
+[project]
+name = "pycld2b"
+dynamic = ["version"]
+authors = [
+    { name = "Rami Al-Rfou", email = "rmyeid@gmail.com" },
+    { name = "Brad Solomon", email = "brad.solomon.1124@gmail.com" },
+    { name = "Daniel Herman", email = "daniel.herman@protonmail.com" },
+]
+maintainers = [
+    { name = "Daniel Herman", email = "daniel.herman@protonmail.com" },
+]
+description = "Python bindings around Google Chromium's embedded compact language detection library (CLD2)"
+readme = "README.md"
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: C++",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Text Processing :: Linguistic",
+]
+keywords = ["cld2", "language detection"]
+urls = { Homepage = "https://github.com/aboSamoor/pycld2" }
+requires-python = ">=3.9"
+dependencies = [
+    "wheel>=0.45.1",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.extensions."pycld2._pycld2"]
+sources = [
+    "cld2/internal/cld2_generated_cjk_compatible.cc",
+    "cld2/internal/cld2_generated_deltaocta0122.cc",
+    "cld2/internal/cld2_generated_distinctocta0122.cc",
+    "cld2/internal/cld2_generated_quad0122.cc",
+    "cld2/internal/cld_generated_cjk_delta_bi_32.cc",
+    "cld2/internal/cld_generated_cjk_uni_prop_80.cc",
+    "cld2/internal/cld_generated_score_quad_octa_0122.cc",
+    "cld2/internal/cldutil.cc",
+    "cld2/internal/cldutil_shared.cc",
+    "cld2/internal/compact_lang_det.cc",
+    "cld2/internal/compact_lang_det_hint_code.cc",
+    "cld2/internal/compact_lang_det_impl.cc",
+    "cld2/internal/debug.cc",
+    "cld2/internal/fixunicodevalue.cc",
+    "cld2/internal/generated_distinct_bi_0.cc",
+    "cld2/internal/generated_entities.cc",
+    "cld2/internal/generated_language.cc",
+    "cld2/internal/generated_ulscript.cc",
+    "cld2/internal/getonescriptspan.cc",
+    "cld2/internal/lang_script.cc",
+    "cld2/internal/offsetmap.cc",
+    "cld2/internal/scoreonescriptspan.cc",
+    "cld2/internal/tote.cc",
+    "cld2/internal/utf8statetable.cc",
+    "bindings/pycldmodule.cc",
+    "bindings/encodings.cc",
+]
+include_dirs = ["cld2/internal", "cld2/public"]
+language = "c++"
+extra_compile_args = [
+    { if = "sys_platform == 'win32'", value = ["/O2"] },
+    { if = "sys_platform != 'win32'", value = ["-w", "-O2", "-fPIC", "-Wno-narrowing"] },
+    { if = "platform_machine == 'x86_64'", value = ["-m64"] },
+    { if = "platform_machine in {'aarch64', 'arm64'}", value = ["-march=armv8-a"] },
+]
